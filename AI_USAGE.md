@@ -26,7 +26,7 @@
 ## Updates in this copy
 - Added simulated initial loading and recoverable application error states without introducing a backend.
 - Added the implementation-based design-system reference and updated run/deploy instructions for this repository.
-- Preserved the existing Git repository, `origin` remote, React app structure, and `gh-pages` deployment command.
+- Preserved the existing Git repository, `origin` remote, React app structure, and GitHub Actions Pages workflow.
 
 ## Responsible Use of AI
 AI was used as a development assistant. The implementation was reviewed and tested during development to ensure the application met the intended requirements.

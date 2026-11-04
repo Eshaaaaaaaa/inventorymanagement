@@ -6,7 +6,7 @@ A responsive, frontend-only inventory management application built with React, V
 
 [https://eshaaaaaaaa.github.io/inventorymanagement/](https://eshaaaaaaaa.github.io/inventorymanagement/)
 
-The existing `npm run deploy` command publishes the built `dist` folder to the repository’s `gh-pages` branch. Use it to update the current GitHub Pages site after building changes.
+The repository’s GitHub Actions workflow builds and publishes the site on every push to `main`. The live URL stays the same while the new build is deployed.
 
 ## Run locally
 
