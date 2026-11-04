@@ -17,6 +17,19 @@ function App() {
   const demoState = new URLSearchParams(window.location.search).get('demoState')
   const [workspaceState, setWorkspaceState] = useState(demoState === 'error' ? 'error' : 'loading')
 
+  // Theme preference
+  const [theme, setTheme] = useState(
+    () => localStorage.getItem('inventory-theme') || 'light'
+  )
+
+  useEffect(() => {
+    localStorage.setItem('inventory-theme', theme)
+  }, [theme])
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light')
+  }
+
   useEffect(() => {
     if (demoState === 'error' || demoState === 'loading') return
     const timer = window.setTimeout(() => setWorkspaceState('ready'), 550)
@@ -146,7 +159,7 @@ function App() {
   }
 
   return (
-    <div className="app">
+    <div className="app" data-theme={theme}>
       <aside className="sidebar">
         <h2>INVENTORY<span>.</span></h2>
         <p className="nav-label">MAIN MENU</p>
@@ -173,6 +186,16 @@ function App() {
             ＋ Add Item
           </button>
         </nav>
+
+        <button
+          type="button"
+          className="theme-toggle"
+          onClick={toggleTheme}
+          aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+          aria-pressed={theme === 'dark'}
+        >
+          {theme === 'light' ? '☾ Dark Mode' : '☀ Light Mode'}
+        </button>
       </aside>
 
       <main className="main">

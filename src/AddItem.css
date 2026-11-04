@@ -3,6 +3,7 @@
   width: 100%;
   max-width: 1100px;
   margin: 0 auto;
+  color: var(--text, #202532);
 }
 
 .form-heading {
@@ -12,26 +13,26 @@
 .form-heading h2 {
   font-size: 27px;
   margin-bottom: 8px;
-  color: #202532;
+  color: var(--text, #202532);
 }
 
 .form-heading p {
-  color: #667085;
+  color: var(--text-secondary, #667085);
   font-size: 14px;
 }
 
 .item-form {
-  background: white;
+  background: var(--surface, white);
   padding: 28px;
-  border: 1px solid #eaecf1;
+  border: 1px solid var(--border, #eaecf1);
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(25, 35, 55, 0.04);
+  box-shadow: var(--card-shadow, 0 2px 8px rgba(25, 35, 55, 0.04));
 }
 
 .item-form h3 {
   font-size: 17px;
   margin: 5px 0 22px;
-  color: #202532;
+  color: var(--text, #202532);
 }
 
 .form-grid {
@@ -47,7 +48,7 @@
   gap: 9px;
   font-size: 13px;
   font-weight: 600;
-  color: #344054;
+  color: var(--text, #344054);
   min-width: 0;
 }
 
@@ -57,33 +58,38 @@
   width: 100%;
   min-width: 0;
   padding: 12px;
-  border: 1px solid #dfe3eb;
+  border: 1px solid var(--border, #dfe3eb);
   border-radius: 7px;
-  background: white;
+  background: var(--surface, white);
   font: inherit;
   font-size: 13px;
-  color: #202532;
+  color: var(--text, #202532);
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.item-form input::placeholder,
+.item-form textarea::placeholder {
+  color: var(--text-secondary, #667085);
 }
 
 .item-form input:focus,
 .item-form select:focus,
 .item-form textarea:focus {
-  border-color: #6656e8;
+  border-color: var(--primary, #6656e8);
   box-shadow: 0 0 0 3px rgba(102, 86, 232, 0.12);
 }
 
 .item-form input:disabled {
-  background: #f0f1f5;
-  color: #667085;
+  background: var(--input-disabled, #f0f1f5);
+  color: var(--text-secondary, #667085);
   cursor: not-allowed;
 }
 
 .item-form input[aria-invalid="true"],
 .item-form select[aria-invalid="true"] {
   border-color: #d64545;
-  background: #fffafa;
+  background: var(--error-input-bg, #fffafa);
 }
 
 .item-form input[aria-invalid="true"]:focus,
@@ -115,7 +121,7 @@
   gap: 12px;
   margin-top: 28px;
   padding-top: 20px;
-  border-top: 1px solid #edf0f4;
+  border-top: 1px solid var(--border, #edf0f4);
 }
 
 .cancel-btn,
@@ -130,21 +136,21 @@
 }
 
 .cancel-btn {
-  background: #f0f1f5;
-  color: #344054;
+  background: var(--button-muted-bg, #f0f1f5);
+  color: var(--text, #344054);
 }
 
 .cancel-btn:hover {
-  background: #e3e5eb;
+  background: var(--button-muted-hover, #e3e5eb);
 }
 
 .save-btn {
-  background: #6656e8;
+  background: var(--primary, #6656e8);
   color: white;
 }
 
 .save-btn:hover {
-  background: #5142ce;
+  background: var(--primary-hover, #5142ce);
   transform: translateY(-1px);
 }
 
@@ -164,11 +170,20 @@
 
 .form-error {
   color: #c33d3d;
-  background: #fff0f0;
+  background: var(--error-bg, #fff0f0);
   padding: 12px;
   border-radius: 7px;
   font-size: 13px;
   margin-top: 15px;
+}
+
+/* Dark theme */
+.app[data-theme="dark"] {
+  --input-disabled: #273449;
+  --error-input-bg: #35252c;
+  --button-muted-bg: #303b50;
+  --button-muted-hover: #3b4860;
+  --error-bg: #35252c;
 }
 
 @media (max-width: 768px) {
