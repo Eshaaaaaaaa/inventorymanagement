@@ -1,0 +1,442 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f6fa;
+  color: #202532;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid rgba(102, 86, 232, 0.35);
+  outline-offset: 2px;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  transform: none;
+}
+
+/* App layout */
+.app {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  background: #171d2b;
+  color: white;
+  padding: 30px 20px;
+  flex-shrink: 0;
+}
+
+.sidebar h2 {
+  font-size: 23px;
+  margin-bottom: 55px;
+}
+
+.sidebar h2 span {
+  color: #8b7cff;
+}
+
+.nav-label {
+  color: #8991a3;
+  font-size: 11px;
+  margin-bottom: 18px;
+  letter-spacing: 1.5px;
+}
+
+.sidebar nav {
+  display: grid;
+  gap: 12px;
+}
+
+.sidebar nav button {
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: transparent;
+  color: #b9c0ce;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.sidebar nav button:hover {
+  background: #282f43;
+  color: white;
+}
+
+.sidebar nav button.active {
+  background: #343c54;
+  color: white;
+}
+
+/* Main content */
+.main {
+  flex: 1;
+  padding: 35px;
+  min-width: 0;
+  overflow-x: hidden;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 35px;
+}
+
+.topbar h2 {
+  font-size: 27px;
+  margin-bottom: 8px;
+}
+
+.topbar p,
+.panel > p {
+  color: #667085;
+  font-size: 14px;
+}
+
+.add-btn {
+  background: #6656e8;
+  color: white;
+  border: none;
+  padding: 13px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.add-btn:hover {
+  background: #5142ce;
+  transform: translateY(-1px);
+}
+
+/* Success notification */
+.success-notification {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  padding: 14px 18px;
+  margin-bottom: 22px;
+  background: #eaf8ef;
+  border: 1px solid #b9e7c8;
+  border-left: 4px solid #24a36b;
+  border-radius: 8px;
+  color: #176b3c;
+  font-size: 14px;
+  box-shadow: 0 2px 8px rgba(20, 40, 30, 0.04);
+}
+
+.success-notification button {
+  border: none;
+  background: transparent;
+  color: #176b3c;
+  font-size: 22px;
+  line-height: 1;
+  padding: 0 4px;
+}
+
+.success-notification button:hover {
+  color: #0b4826;
+}
+
+/* Summary cards */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.stat-card,
+.panel {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  border: 1px solid #eaecf1;
+  min-width: 0;
+  box-shadow: 0 2px 8px rgba(25, 35, 55, 0.035);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.stat-card:hover,
+.panel:hover {
+  box-shadow: 0 5px 16px rgba(25, 35, 55, 0.07);
+}
+
+.stat-card p {
+  color: #667085;
+  font-size: 14px;
+}
+
+.stat-card h1 {
+  color: #202532;
+  font-size: 32px;
+  margin: 18px 0 8px;
+}
+
+.stat-card small {
+  color: #667085;
+}
+
+/* Dashboard panels */
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.panel h3 {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.stock-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  margin-top: 25px;
+  font-size: 14px;
+}
+
+.bar {
+  grid-column: 1 / -1;
+  height: 8px;
+  background: #e9f5ed;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.bar div {
+  height: 100%;
+  background: #24a36b;
+  border-radius: 10px;
+}
+
+.bar.warning {
+  background: #fff0d9;
+}
+
+.bar.warning div {
+  background: #edaa42;
+}
+
+.bar.danger {
+  background: #ffe5e5;
+}
+
+.bar.danger div {
+  background: #e65c5c;
+}
+
+/* Attention items */
+.attention-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 0;
+  border-bottom: 1px solid #edf0f4;
+}
+
+.attention-item strong {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.attention-item small {
+  color: #667085;
+}
+
+.low,
+.out {
+  font-size: 11px;
+  padding: 7px 9px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.low {
+  background: #fff2dc;
+  color: #a96a0b;
+}
+
+.out {
+  background: #ffe5e5;
+  color: #c33d3d;
+}
+
+/* Tablet */
+@media (max-width: 1000px) {
+  .sidebar {
+    width: 210px;
+    padding: 25px 15px;
+  }
+
+  .main {
+    padding: 25px 20px;
+  }
+
+  .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .app {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    padding: 16px;
+  }
+
+  .sidebar h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+
+  .nav-label {
+    display: none;
+  }
+
+  .sidebar nav {
+    display: flex;
+    gap: 8px;
+  }
+
+  .sidebar nav button {
+    flex: 1;
+    width: auto;
+    text-align: center;
+    padding: 12px 5px;
+    font-size: 12px;
+  }
+
+  .main {
+    width: 100%;
+    padding: 20px 14px;
+  }
+
+  .topbar {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 22px;
+  }
+
+  .topbar h2 {
+    font-size: 24px;
+  }
+
+  .topbar .add-btn {
+    width: 100%;
+  }
+
+  .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .stat-card {
+    padding: 15px;
+  }
+
+  .stat-card p {
+    font-size: 12px;
+  }
+
+  .stat-card h1 {
+    font-size: 25px;
+    margin: 12px 0 6px;
+  }
+
+  .stat-card small {
+    font-size: 11px;
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .panel {
+    padding: 16px;
+  }
+
+  .attention-item {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .success-notification {
+    padding: 12px;
+    font-size: 13px;
+  }
+}
+
+/* Small phones */
+@media (max-width: 380px) {
+  .main {
+    padding: 16px 10px;
+  }
+
+  .sidebar {
+    padding: 12px;
+  }
+
+  .sidebar nav button {
+    font-size: 11px;
+  }
+
+  .stat-card {
+    padding: 12px;
+  }
+
+  .stat-card h1 {
+    font-size: 22px;
+  }
+}
+
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
