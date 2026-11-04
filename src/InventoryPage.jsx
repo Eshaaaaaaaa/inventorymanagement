@@ -229,11 +229,21 @@ function Inventory({
           </div>
 
           {adjustMode && (
-            <form onSubmit={handleAdjustment} style={{ marginTop: '20px' }}>
-              <label>
-                Stock Adjustment (+ to add, - to remove)
+            <form className="stock-adjustment-card" onSubmit={handleAdjustment}>
+              <div className="stock-adjustment-heading">
+                <span className="stock-adjustment-icon" aria-hidden="true">±</span>
+                <div>
+                  <h3>Adjust stock</h3>
+                  <p>Enter a positive number to add stock or a negative number to remove it.</p>
+                </div>
+              </div>
 
+              <label className="adjustment-field" htmlFor="stock-adjustment-input">
+                <span>Quantity change</span>
+                <div className="adjustment-input-wrap">
+                  <span aria-hidden="true">±</span>
                 <input
+                  id="stock-adjustment-input"
                   type="number"
                   step="1"
                   value={adjustment}
@@ -241,34 +251,34 @@ function Inventory({
                     setAdjustment(e.target.value)
                     setAdjustmentError('')
                   }}
-                  placeholder="Example: 10 or -5"
+                  placeholder="e.g. 10 or -5"
                   aria-invalid={!!adjustmentError}
                   required
                 />
+                </div>
+                <small>Available now: <strong>{selectedItem.quantity} {selectedItem.unit || 'Units'}</strong></small>
               </label>
 
               {adjustmentError && (
-                <p className="field-error" role="alert">
+                <p className="adjustment-error" role="alert">
                   {adjustmentError}
                 </p>
               )}
 
               {pendingAdjustment === null ? (
-                <button
-                  className="add-btn"
-                  type="submit"
-                  style={{ marginTop: '15px' }}
-                >
-                  Review Adjustment
+                <button className="add-btn adjustment-review" type="submit">
+                  Review adjustment
                 </button>
               ) : (
-                <div style={{ marginTop: '18px' }}>
-                  <p>
-                    Confirm changing stock from {selectedItem.quantity} to{' '}
-                    {selectedItem.quantity + pendingAdjustment}?
-                  </p>
+                <div className="adjustment-confirmation">
+                  <p>Confirm this stock change?</p>
+                  <div className="adjustment-calculation">
+                    <span>{selectedItem.quantity} <small>current</small></span>
+                    <span aria-hidden="true">→</span>
+                    <strong>{selectedItem.quantity + pendingAdjustment} <small>new quantity</small></strong>
+                  </div>
 
-                  <div className="form-actions">
+                  <div className="adjustment-actions">
                     <button
                       type="button"
                       className="cancel-btn"
@@ -279,10 +289,10 @@ function Inventory({
 
                     <button
                       type="button"
-                      className="add-btn"
+                      className="add-btn adjustment-review"
                       onClick={confirmAdjustment}
                     >
-                      Confirm Adjustment
+                      Confirm adjustment
                     </button>
                   </div>
                 </div>

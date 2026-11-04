@@ -41,6 +41,7 @@ function App() {
   const [updatedItems, setUpdatedItems] = useState([])
   const [editingItem, setEditingItem] = useState(null)
   const [notification, setNotification] = useState('')
+  const [selectedSummary, setSelectedSummary] = useState(null)
 
   const allItems = [
     ...initialItems.map(item =>
@@ -67,6 +68,14 @@ function App() {
   const attentionItems = allItems.filter(
     item => item.status !== 'In Stock'
   )
+
+  const summaryCards = [
+    { title: 'Total Items', value: totalItems, description: 'Across all locations', items: allItems },
+    { title: 'In Stock', value: inStock, description: 'Healthy inventory', items: allItems.filter(item => item.status === 'In Stock') },
+    { title: 'Low Stock', value: lowStock, description: 'Needs attention', items: allItems.filter(item => item.status === 'Low Stock') },
+    { title: 'Out of Stock', value: outOfStock, description: 'Restocking required', items: allItems.filter(item => item.status === 'Out of Stock') },
+    { title: 'Items Requiring Attention', value: attentionCount, description: 'Restocking action needed', items: attentionItems }
+  ]
 
   const handleSave = (form) => {
     const quantity = Number(form.quantity)
@@ -229,18 +238,20 @@ function App() {
             </header>
 
             <section className="stats">
-              {[
-                ['Total Items', totalItems, 'Across all locations'],
-                ['In Stock', inStock, 'Healthy inventory'],
-                ['Low Stock', lowStock, 'Needs attention'],
-                ['Out of Stock', outOfStock, 'Restocking required'],
-                ['Items Requiring Attention', attentionCount, 'Restocking action needed']
-              ].map(([title, value, description]) => (
-                <div className="stat-card" key={title}>
-                  <p>{title}</p>
-                  <h1>{value}</h1>
-                  <small>{description}</small>
-                </div>
+              {summaryCards.map(summary => (
+                <button
+                  type="button"
+                  className="stat-card stat-card-button"
+                  key={summary.title}
+                  aria-haspopup="dialog"
+                  aria-label={`Show ${summary.title.toLowerCase()} items`}
+                  onClick={() => setSelectedSummary(summary)}
+                >
+                  <span className="stat-card-open-hint" aria-hidden="true">↗</span>
+                  <p>{summary.title}</p>
+                  <h1>{summary.value}</h1>
+                  <small>{summary.description}</small>
+                </button>
               ))}
             </section>
 
@@ -306,7 +317,73 @@ function App() {
             onSave={handleSave}
           />
         )}
+
+        {workspaceState === 'ready' && selectedSummary && (
+          <SummaryItemsModal
+            summary={selectedSummary}
+            onClose={() => setSelectedSummary(null)}
+          />
+        )}
       </main>
+    </div>
+  )
+}
+
+function SummaryItemsModal({ summary, onClose }) {
+  useEffect(() => {
+    const handleKeyDown = event => {
+      if (event.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [onClose])
+
+  return (
+    <div
+      className="summary-modal-overlay"
+      onMouseDown={event => {
+        if (event.target === event.currentTarget) onClose()
+      }}
+    >
+      <section
+        className="summary-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="summary-modal-title"
+      >
+        <header className="summary-modal-header">
+          <div>
+            <p>Inventory summary</p>
+            <h2 id="summary-modal-title">{summary.title}</h2>
+          </div>
+          <button
+            type="button"
+            className="summary-modal-close"
+            aria-label="Close item list"
+            onClick={onClose}
+          >
+            ×
+          </button>
+        </header>
+
+        {summary.items.length > 0 ? (
+          <div className="summary-items-list">
+            <div className="summary-items-heading"><span>Item ID</span><span>Item name</span></div>
+            {summary.items.map(item => (
+              <div className="summary-item-row" key={item.id}>
+                <span>{item.id}</span>
+                <strong>{item.name}</strong>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="summary-empty">There are no items in this group.</p>
+        )}
+
+        <footer className="summary-modal-footer">
+          <button type="button" className="add-btn" onClick={onClose}>Close</button>
+        </footer>
+      </section>
     </div>
   )
 }
