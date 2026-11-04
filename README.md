@@ -1,17 +1,46 @@
-# React + Vite
+# Inventory Management Web App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A responsive, frontend-only inventory management application built with React, Vite, and React Router. It uses local dummy data and browser state; there is no backend or database. See [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md) for the visual tokens and responsive rules, and [AI_USAGE.md](./AI_USAGE.md) for development notes.
 
-Currently, two official plugins are available:
+## Live site
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+[https://eshaaaaaaaa.github.io/inventorymanagement/](https://eshaaaaaaaa.github.io/inventorymanagement/)
 
-## React Compiler
+The existing `npm run deploy` command publishes the built `dist` folder to the repository’s `gh-pages` branch. Use it to update the current GitHub Pages site after building changes.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Run locally
 
-## Expanding the ESLint configuration
+Requirements: Node.js 20.19+ or 22.12+ and npm.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-"# inventorymanagement" 
+```bash
+npm install
+npm run dev
+```
+
+Open the local address printed by Vite. For a production build and local preview:
+
+```bash
+npm run build
+npm run preview
+```
+
+To publish to the existing GitHub Pages site:
+
+```bash
+npm run deploy
+```
+
+## Included experiences
+
+- **Overview:** inventory totals, stock distribution, and items needing attention.
+- **Inventory:** searchable and sortable item list with category and stock-status filters.
+- **Item details:** item description, stock, location, recent movements, edit, and stock adjustment.
+- **Add/edit item:** grouped form, required fields, inline validation, duplicate-ID handling, and save feedback.
+- **Feedback states:** initial loading skeleton, no-results empty state, recoverable workspace error, field validation errors, and success notification.
+- **Responsive layout:** desktop, tablet, and mobile breakpoints; the inventory list uses a horizontally scrollable data region on narrow screens.
+
+## Preview feedback states
+
+The normal first load briefly displays the loading skeleton. To keep it visible for review, append `?demoState=loading` to the URL. To preview the recoverable error, use `?demoState=error`; select **Try again** to return to the app. Remove the query parameter to return to normal behavior.
+
+Search matches item names and IDs. Updates, additions, and stock changes are held in React state and reset when the page is refreshed.

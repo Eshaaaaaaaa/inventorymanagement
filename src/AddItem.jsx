@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import './AddItem.css'
 
 function AddItem({ onCancel, onSave, editItem = null, existingItems = [] }) {
@@ -15,19 +15,9 @@ function AddItem({ onCancel, onSave, editItem = null, existingItems = [] }) {
     supplier: ''
   }
 
-  const [form, setForm] = useState(emptyForm)
+  const [form, setForm] = useState(() => ({ ...emptyForm, ...(editItem || {}) }))
   const [errors, setErrors] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
-
-  useEffect(() => {
-    if (editItem) {
-      setForm({ ...emptyForm, ...editItem })
-    } else {
-      setForm(emptyForm)
-    }
-    setErrors({})
-    setIsSubmitting(false)
-  }, [editItem])
 
   const handleChange = (e) => {
     const { name, value } = e.target

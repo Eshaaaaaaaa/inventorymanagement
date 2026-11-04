@@ -1,5 +1,5 @@
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import Inventory from './InventoryPage.jsx'
 import AddItem from './AddItem.jsx'
@@ -14,6 +14,15 @@ const initialItems = [
 ]
 
 function App() {
+  const demoState = new URLSearchParams(window.location.search).get('demoState')
+  const [workspaceState, setWorkspaceState] = useState(demoState === 'error' ? 'error' : 'loading')
+
+  useEffect(() => {
+    if (demoState === 'error' || demoState === 'loading') return
+    const timer = window.setTimeout(() => setWorkspaceState('ready'), 550)
+    return () => window.clearTimeout(timer)
+  }, [demoState])
+
   const [page, setPage] = useState('Overview')
   const [newItems, setNewItems] = useState([])
   const [updatedItems, setUpdatedItems] = useState([])
@@ -128,6 +137,14 @@ function App() {
     setPage('Add Item')
   }
 
+  const retryLoad = () => {
+    const url = new URL(window.location.href)
+    url.searchParams.delete('demoState')
+    window.history.replaceState({}, '', url)
+    setWorkspaceState('loading')
+    window.setTimeout(() => setWorkspaceState('ready'), 550)
+  }
+
   return (
     <div className="app">
       <aside className="sidebar">
@@ -159,7 +176,10 @@ function App() {
       </aside>
 
       <main className="main">
-        {notification && (
+        {workspaceState === 'loading' && <WorkspaceLoading />}
+        {workspaceState === 'error' && <WorkspaceError onRetry={retryLoad} />}
+
+        {workspaceState === 'ready' && notification && (
           <div className="success-notification" role="status">
             <span>✓ {notification}</span>
             <button
@@ -172,7 +192,7 @@ function App() {
           </div>
         )}
 
-        {page === 'Overview' && (
+        {workspaceState === 'ready' && page === 'Overview' && (
           <>
             <header className="topbar">
               <div>
@@ -244,7 +264,7 @@ function App() {
           </>
         )}
 
-        {page === 'Inventory' && (
+        {workspaceState === 'ready' && page === 'Inventory' && (
           <Inventory
             newItems={newItems}
             updatedItems={updatedItems}
@@ -254,7 +274,7 @@ function App() {
           />
         )}
 
-        {(page === 'Add Item' || page === 'Edit Item') && (
+        {workspaceState === 'ready' && (page === 'Add Item' || page === 'Edit Item') && (
           <AddItem
             key={editingItem ? editingItem.id : 'new-item'}
             editItem={editingItem}
@@ -265,6 +285,29 @@ function App() {
         )}
       </main>
     </div>
+  )
+}
+
+function WorkspaceLoading() {
+  return (
+    <section className="workspace-state workspace-loading" role="status" aria-live="polite" aria-label="Loading inventory workspace">
+      <div className="loading-title"><i /><i /></div>
+      <div className="loading-stat-grid">{[1, 2, 3, 4].map(card => <i key={card} />)}</div>
+      <div className="loading-panels"><i /><i /></div>
+      <span>Loading your inventory…</span>
+    </section>
+  )
+}
+
+function WorkspaceError({ onRetry }) {
+  return (
+    <section className="workspace-state workspace-error" role="alert">
+      <div className="error-mark" aria-hidden="true">!</div>
+      <h2>We couldn’t load your inventory</h2>
+      <p>Something interrupted the inventory data load. Your saved items haven’t been changed.</p>
+      <button className="add-btn" onClick={onRetry}>Try again</button>
+      <small>This is a simulated error state for the frontend demo.</small>
+    </section>
   )
 }
 
